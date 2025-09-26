@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Cloud Free link </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            overflow: hidden;
+            height: 100vh;
+            color: white;
+        }
+        
+        #websiteFrame {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+        
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            z-index: 1000;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            background: rgba(255, 0, 0, 0.2);
+            border-radius: 10px;
+            margin: 20px;
+        }
+        
+        .error-message h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+        
+        .link-info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 100;
+        }
+        
+        .timer {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 100;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+  <iframe src="https://ad2bitcoin.com/ad.php?ref=Noor25p&width=728" marginwidth="0" marginheight="0" width="728" height="90" scrolling="no" border="0" frameborder="0"></iframe>
+    <div class="loading" id="loading">
+        <div>Loading movie cloud...</div>
+        <div id="currentLink" style="margin-top: 10px; font-size: 14px; color: #aaa;"></div>
+    </div>
+    
+    <div id="errorContainer" class="loading hidden">
+        <div class="error-message">
+            <h2>Access Restricted</h2>
+            <p>Your user agent (Linux) is not allowed to view this content.</p>
+            <p>Please change your user agent to access these links.</p>
+            <p style="margin-top: 15px; font-size: 14px; color: #ccc;">Detected User Agent: <span id="userAgentDisplay"></span></p>
+        </div>
+    </div>
+    
+    <iframe 
+        id="websiteFrame" 
+        title="Website Viewer"
+        allowfullscreen>
+    </iframe>
+    
+    <div class="link-info" id="linkInfo">Link 1 of 5k HD+</div>
+    <div class="timer" id="timer"> movie cloud : 5k </div>
+
+    <script>
+        // List of 5 links to cycle through
+        const links = [
+            "https://www.revenuecpmgate.com/tyq31umg?key=efe18e07caace1a6cf7a1c3803bddac6",
+            "https://www.revenuecpmgate.com/n940t0tzvt?key=76fd8ae733b7da6c84365cc91d5b4692",
+            "https://www.revenuecpmgate.com/x31f2wqvz1?key=fdf58218de236bca5f015c83e2339529",
+            "https://www.revenuecpmgate.com/h2t12cfj?key=65994a8ce7994b1ce9c4d75f7a90529a"
+        ];
+        
+        // Check if user agent contains "Linux"
+        function isLinuxUserAgent() {
+            return navigator.userAgent.toLowerCase().includes('linux');
+        }
+        
+        // Elements
+        const websiteFrame = document.getElementById('websiteFrame');
+        const loading = document.getElementById('loading');
+        const errorContainer = document.getElementById('errorContainer');
+        const userAgentDisplay = document.getElementById('userAgentDisplay');
+        const linkInfo = document.getElementById('linkInfo');
+        const timer = document.getElementById('timer');
+        const currentLink = document.getElementById('currentLink');
+        
+        // Variables
+        let currentLinkIndex = 0;
+        let countdown = 5;
+        let countdownInterval;
+        
+        // Function to show error message for Linux users
+        function showLinuxError() {
+            loading.classList.add('hidden');
+            websiteFrame.classList.add('hidden');
+            errorContainer.classList.remove('hidden');
+            userAgentDisplay.textContent = navigator.userAgent;
+        }
+        
+        // Function to load a specific link
+        function loadLink(index) {
+            currentLinkIndex = index;
+            websiteFrame.src = links[index];
+            linkInfo.textContent = `Link ${index + 1} of ${links.length}`;
+            currentLink.textContent = links[index];
+            loading.classList.remove('hidden');
+        }
+        
+        // Function to move to the next link
+        function nextLink() {
+            currentLinkIndex = (currentLinkIndex + 1) % links.length;
+            loadLink(currentLinkIndex);
+            resetCountdown();
+        }
+        
+        // Function to reset the countdown timer
+        function resetCountdown() {
+            countdown = 5;
+            timer.textContent = `Next in: ${countdown}s`;
+            
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            countdownInterval = setInterval(() => {
+                countdown--;
+                timer.textContent = `Next in: ${countdown}s`;
+                
+                if (countdown <= 0) {
+                    nextLink();
+                }
+            }, 1000);
+        }
+        
+        // Hide loading when iframe loads
+        websiteFrame.addEventListener('load', function() {
+            loading.classList.add('hidden');
+        });
+        
+        // Initialize the viewer
+        function initViewer() {
+            if (isLinuxUserAgent()) {
+                showLinuxError();
+            } else {
+                // Start with the first link
+                loadLink(0);
+                resetCountdown();
+                
+                // Set up automatic rotation every 5 seconds
+                setInterval(nextLink, 5000);
+            }
+        }
+        
+        // Start the viewer when page loads
+        window.addEventListener('load', initViewer);
+    </script>
+</body>
+</html>
